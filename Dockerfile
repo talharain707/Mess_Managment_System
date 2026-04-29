@@ -6,7 +6,9 @@ COPY package.json package-lock.json webpack.mix.js ./
 COPY resources ./resources
 COPY public ./public
 
-RUN npm ci && npm run prod
+RUN npm ci \
+    && npm run prod \
+    && printf '{"/js/app.js":"/js/app.js","/css/app.css":"/css/app.css"}\n' > public/mix-manifest.json
 
 FROM composer:2 AS vendor
 
