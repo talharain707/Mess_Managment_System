@@ -63,20 +63,15 @@ FILESYSTEM_DISK=local
 php artisan key:generate --show
 ```
 
-Initial demo data/admin user create karne ke liye pehli deploy par temporarily ye env var add karein:
+Initial data/admin user create karne ke liye pehli deploy par temporarily ye env vars add karein:
 
 ```env
 RUN_SEEDER=true
+SEED_ADMIN_EMAIL=your-admin-email@example.com
+SEED_ADMIN_PASSWORD=your-secure-password
 ```
 
-Pehli successful deploy aur login ke baad `RUN_SEEDER` remove ya `false` kar dein, warna har restart/deploy par seed data sync hoga aur demo admin password reset ho sakta hai.
-
-Default seeded admin:
-
-- Email: `admin@messapp.test`
-- Password: `password`
-
-Login ke baad password foran change karein.
+Pehli successful deploy aur login ke baad `RUN_SEEDER` remove ya `false` kar dein. Admin email/password public docs ya repo mein commit na karein.
 
 ### 4. Render Deploy Notes
 
@@ -154,12 +149,7 @@ Server par empty MySQL database bana kar migrations run karein:
 php artisan migrate --seed --force
 ```
 
-Seed ke baad default admin:
-
-- Email: `admin@messapp.test`
-- Password: `password`
-
-Deploy ke baad is password ko foran change karein.
+Admin login credentials `.env` ke `SEED_ADMIN_EMAIL` aur `SEED_ADMIN_PASSWORD` se set karein; credentials public docs ya repo mein commit na karein.
 
 ## 5. Optimize Laravel
 

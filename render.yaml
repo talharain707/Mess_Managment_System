@@ -35,7 +35,7 @@ services:
       - key: FILESYSTEM_DISK
         value: local
       - key: RUN_SEEDER
-        value: true
+        value: false
 
 databases:
   - name: mess-management-db

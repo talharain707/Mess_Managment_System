@@ -51,14 +51,35 @@ class DatabaseSeeder extends Seeder
         ]);
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        $admin = User::query()->updateOrCreate(
-            ['email' => 'admin@messapp.test'],
-            [
-                'name' => 'Mess Admin',
-                'phone' => '0300-0000000',
-                'password' => Hash::make('password'),
-            ]
-        );
+        $adminEmail = env('SEED_ADMIN_EMAIL');
+        $adminPassword = env('SEED_ADMIN_PASSWORD');
+
+        $admin = $adminEmail
+            ? User::query()->firstOrNew(['email' => $adminEmail])
+            : User::query()->whereHas('roles', fn ($query) => $query->where('name', 'admin'))->first();
+
+        if (! $admin) {
+            if (! $adminEmail || ! $adminPassword) {
+                throw new \RuntimeException('SEED_ADMIN_EMAIL and SEED_ADMIN_PASSWORD are required when creating the initial admin user.');
+            }
+
+            $admin = new User(['email' => $adminEmail]);
+        }
+
+        $admin->fill([
+            'name' => $admin->name ?: 'Mess Admin',
+            'phone' => $admin->phone ?: '0300-0000000',
+        ]);
+
+        if (! $admin->exists && ! $adminPassword) {
+            throw new \RuntimeException('SEED_ADMIN_PASSWORD is required when creating the initial admin user.');
+        }
+
+        if ($adminPassword) {
+            $admin->password = Hash::make($adminPassword);
+        }
+
+        $admin->save();
         $admin->syncRoles([$adminRole]);
 
         $members = collect([

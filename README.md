@@ -20,11 +20,6 @@ Laravel `9.52.21` aur React frontend par based responsive mess management applic
 - Payment collection
 - Role and permission based authorization
 
-## Demo Login
-
-- Email: `admin@messapp.test`
-- Password: `password`
-
 ## Database
 
 `.env` aur `.env.example` MySQL database `mess_management` ke liye set hain.

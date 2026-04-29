@@ -48,7 +48,7 @@ export default function App() {
     const [activeTab, setActiveTab] = useState('dashboard');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const [loginForm, setLoginForm] = useState({ email: 'admin@messapp.test', password: 'password' });
+    const [loginForm, setLoginForm] = useState({ email: '', password: '' });
     const [memberForm, setMemberForm] = useState(memberBlank());
     const [expenseForm, setExpenseForm] = useState(expenseBlank());
     const [menuForm, setMenuForm] = useState(menuBlank());
