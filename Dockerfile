@@ -34,10 +34,13 @@ WORKDIR /var/www/html
 COPY docker/apache-vhost.conf /etc/apache2/sites-available/000-default.conf
 COPY . .
 COPY --from=vendor /app/vendor ./vendor
-COPY --from=assets /app/public ./public
+COPY --from=assets /app/public/css ./public/css
+COPY --from=assets /app/public/js ./public/js
+COPY --from=assets /app/public/mix-manifest.json ./public/mix-manifest.json
 COPY docker/render-start.sh /usr/local/bin/render-start.sh
 
-RUN chown -R www-data:www-data storage bootstrap/cache \
+RUN test -f public/mix-manifest.json \
+    && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R ug+rwx storage bootstrap/cache \
     && chmod +x /usr/local/bin/render-start.sh
 
