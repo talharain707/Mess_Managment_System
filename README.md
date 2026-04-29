@@ -37,6 +37,16 @@ npm run dev
 php artisan serve
 ```
 
+## Production Deploy
+
+Detailed production deployment steps are available in [DEPLOYMENT.md](DEPLOYMENT.md).
+
+Render deployment ke liye Docker setup included hai:
+
+- `Dockerfile`
+- `docker/apache-vhost.conf`
+- `docker/render-start.sh`
+
 ## Notes
 
 - Dashboard calculations manual Google Sheet workflow ko base bana kar seed ki gayi hain.
