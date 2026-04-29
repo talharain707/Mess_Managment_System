@@ -34,9 +34,7 @@ WORKDIR /var/www/html
 COPY docker/apache-vhost.conf /etc/apache2/sites-available/000-default.conf
 COPY . .
 COPY --from=vendor /app/vendor ./vendor
-COPY --from=assets /app/public/css ./public/css
-COPY --from=assets /app/public/js ./public/js
-COPY --from=assets /app/public/mix-manifest.json ./public/mix-manifest.json
+COPY --from=assets /app/public/ ./public/
 COPY docker/render-start.sh /usr/local/bin/render-start.sh
 
 RUN test -f public/mix-manifest.json \
