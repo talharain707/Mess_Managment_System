@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             'manage expenses',
             'manage menu',
             'manage payments',
+            'manage users',
         ];
 
         $permissionModels = collect($permissions)->mapWithKeys(function ($permission) {
