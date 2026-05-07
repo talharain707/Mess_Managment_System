@@ -104,6 +104,20 @@ export default function App() {
         if (section === 'users') setUserForm(userBlank());
     }
 
+    function editResource(section, resource) {
+        setEditing((current) => ({ ...current, [section]: resource.id }));
+
+        if (section === 'users') {
+            setUserForm({
+                name: resource.name || '',
+                email: resource.email || '',
+                phone: resource.phone || '',
+                password: '',
+                role: resource.role || 'staff',
+            });
+        }
+    }
+
     async function refresh() {
         setLoading(true);
         setError('');
