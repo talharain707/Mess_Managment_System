@@ -47,8 +47,6 @@ class DatabaseSeeder extends Seeder
         $managerRole->syncPermissions($permissionModels->values());
         $staffRole->syncPermissions([
             $permissionModels['view dashboard'],
-            $permissionModels['manage expenses'],
-            $permissionModels['manage payments'],
         ]);
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
