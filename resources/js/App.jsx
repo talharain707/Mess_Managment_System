@@ -104,20 +104,6 @@ export default function App() {
         if (section === 'users') setUserForm(userBlank());
     }
 
-    function editResource(section, resource) {
-        setEditing((current) => ({ ...current, [section]: resource.id }));
-
-        if (section === 'users') {
-            setUserForm({
-                name: resource.name || '',
-                email: resource.email || '',
-                phone: resource.phone || '',
-                password: '',
-                role: resource.role || 'staff',
-            });
-        }
-    }
-
     async function refresh() {
         setLoading(true);
         setError('');
@@ -345,7 +331,7 @@ export default function App() {
                     <Field label={editing.users ? "Reset Password (Optional)" : "Password"}><input type="password" value={userForm.password ?? ''} onChange={(e) => setUserForm({ ...userForm, password: e.target.value })} required={!editing.users} minLength={6} /></Field>
                 </FormCard>
                 <div className="table-card" style={{ gridColumn: '1 / -1' }}><h3>System Accounts</h3><div className="table-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Phone</th><th className="text-right">Actions</th></tr></thead><tbody>
-                    {sysUsers.map(u => <tr key={u.id}><td>{u.name}</td><td>{u.email}</td><td><span style={{textTransform:'capitalize', background: u.role==='admin'?'#dcfce7':'#f3f4f6', color: u.role==='admin'?'#166534':'#374151', padding:'2px 6px', borderRadius:'12px', fontSize:'12px', fontWeight:'bold'}}>{u.role}</span></td><td>{u.phone}</td><td className="text-right"><ActionGroup onEdit={() => editResource('users', u)} onDelete={() => removeResource('users', '/users', u.id, u.name)} /></td></tr>)}
+                    {sysUsers.map(u => <tr key={u.id}><td>{u.name}</td><td>{u.email}</td><td><span style={{textTransform:'capitalize', background: u.role==='admin'?'#dcfce7':'#f3f4f6', color: u.role==='admin'?'#166534':'#374151', padding:'2px 6px', borderRadius:'12px', fontSize:'12px', fontWeight:'bold'}}>{u.role}</span></td><td>{u.phone}</td><td className="text-right"><ActionGroup onEdit={() => { setEditing((current) => ({ ...current, users: u.id })); setUserForm({ name: u.name || '', email: u.email || '', phone: u.phone || '', password: '', role: u.role || 'staff' }); }} onDelete={() => removeResource('users', '/users', u.id, u.name)} /></td></tr>)}
                 </tbody></table></div></div>
                 </section> : null}
             </div>
