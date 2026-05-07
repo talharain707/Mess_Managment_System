@@ -17,8 +17,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/dashboard', DashboardController::class)->middleware('permission:view dashboard');
-    Route::post('/close-month', MonthCloseController::class)->middleware('permission:view dashboard');
-    Route::post('/unlock-month', \App\Http\Controllers\Api\MonthUnlockController::class)->middleware('permission:view dashboard');
+    Route::post('/close-month', MonthCloseController::class)->middleware('permission:manage payments');
+    Route::post('/unlock-month', \App\Http\Controllers\Api\MonthUnlockController::class)->middleware('permission:manage payments');
     Route::get('/expense-categories', fn () => ExpenseCategory::query()->where('is_active', true)->orderBy('type')->orderBy('name')->get());
     Route::apiResource('users', UserController::class)->middleware('permission:manage users');
     Route::apiResource('members', MemberController::class)->middleware('permission:manage members');

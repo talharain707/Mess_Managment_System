@@ -284,7 +284,7 @@ export default function App() {
                 <div className="nav-tabs">
                     {allowedTabs.map((tab) => <button key={tab.id} className={`nav-tab ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id)}>{tab.label}</button>)}
                 </div>
-                {activeTab === 'dashboard' && dashboard ? <Dashboard dashboard={dashboard} closeMonth={handleCloseMonth} closingMonth={closingMonth} unlockMonth={handleUnlockMonth} unlockingMonth={unlockingMonth} isFetching={fetchingDashboard} /> : null}
+                {activeTab === 'dashboard' && dashboard ? <Dashboard dashboard={dashboard} closeMonth={handleCloseMonth} closingMonth={closingMonth} unlockMonth={handleUnlockMonth} unlockingMonth={unlockingMonth} isFetching={fetchingDashboard} canManageLedger={(user?.permissions || []).includes('manage payments')} /> : null}
                 {activeTab === 'members' ? <section className="content-grid"><FormCard title={editing.members ? 'Edit Member' : 'Add Member'} submitLabel={busySection === 'members' ? 'Saving...' : editing.members ? 'Update Member' : 'Save Member'} onCancel={editing.members ? () => resetEditor('members') : null} onSubmit={(e) => { e.preventDefault(); saveResource('members', '/members', memberForm); }}>
                     <Field label="Name"><input value={memberForm.name} onChange={(e) => setMemberForm({ ...memberForm, name: e.target.value })} /></Field>
                     <Field label="Phone"><input value={memberForm.phone} onChange={(e) => setMemberForm({ ...memberForm, phone: e.target.value })} /></Field>
@@ -342,7 +342,7 @@ export default function App() {
     );
 }
 
-function Dashboard({ dashboard, closeMonth, closingMonth, unlockMonth, unlockingMonth, isFetching }) {
+function Dashboard({ dashboard, closeMonth, closingMonth, unlockMonth, unlockingMonth, isFetching, canManageLedger }) {
     return (
         <div style={{ position: 'relative' }}>
             {isFetching && (
@@ -352,20 +352,20 @@ function Dashboard({ dashboard, closeMonth, closingMonth, unlockMonth, unlocking
                     </div>
                 </div>
             )}
-            {dashboard.stats.is_closed ? (
+            {canManageLedger && dashboard.stats.is_closed ? (
                 <div className="error-banner" style={{ background: '#3b82f6', color: 'white', borderColor: '#2563eb', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span>This month's ledger is closed. Member liabilities have been locked and forwarded.</span>
                     <button className="btn btn-secondary" style={{ padding: '6px 14px', fontSize: '13px', background: 'white', color: '#1e40af', border: 'none', fontWeight: 'bold' }} onClick={unlockMonth} disabled={unlockingMonth}>
                         {unlockingMonth ? 'Unlocking...' : 'Unlock Month'}
                     </button>
                 </div>
-            ) : (
+            ) : canManageLedger ? (
                 <div className="action-row" style={{ textAlign: 'right', marginBottom: 18 }}>
                     <button className="btn btn-primary" onClick={closeMonth} disabled={closingMonth}>
                         {closingMonth ? 'Closing...' : 'Close Month & Forward Ledger'}
                     </button>
                 </div>
-            )}
+            ) : null}
             <section className="stats-grid">
                 <Stat title="Active Members" value={dashboard.stats.active_members} helper="Current occupied beds" />
                 <Stat title="Total Revenue" value={money(dashboard.stats.total_revenue)} helper="Fixed monthly share" />
