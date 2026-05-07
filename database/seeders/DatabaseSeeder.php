@@ -44,7 +44,10 @@ class DatabaseSeeder extends Seeder
         $staffRole = Role::findOrCreate('staff', 'web');
 
         $adminRole->syncPermissions($permissionModels->values());
-        $managerRole->syncPermissions($permissionModels->values());
+        $managerRole->syncPermissions([
+            $permissionModels['view dashboard'],
+            $permissionModels['manage expenses'],
+        ]);
         $staffRole->syncPermissions([
             $permissionModels['view dashboard'],
         ]);
